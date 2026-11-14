@@ -2318,7 +2318,7 @@ if ('serviceWorker' in navigator) {
  const navs=[...document.querySelectorAll('[data-dw-tab]')];
  function updateHome(){
   if(typeof calcDay!=='function'||typeof monthRows!=='function')return;
-  const hour=new Date().getHours();const greeting=hour>=5&&hour<12?'Good morning':hour>=12&&hour<17?'Good afternoon':'Good evening';const greetingEl=document.getElementById('homeGreeting');if(greetingEl)greetingEl.textContent=greeting+' 👋';
+  const hour=new Date().getHours();const greeting=hour>=0&&hour<12?'Good morning':hour>=12&&hour<17?'Good afternoon':'Good evening';const greetingEl=document.getElementById('homeGreeting');if(greetingEl)greetingEl.textContent=greeting+' 👋';
   const d=calcDay(),rows=monthRows(),total=rows.reduce((s,x)=>s+x.total,0);
   const marked=d.present+d.absent,unmarked=Math.max(0,db.customers.length-marked);
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
