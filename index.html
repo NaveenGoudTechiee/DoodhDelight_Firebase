@@ -1577,35 +1577,6 @@ main,#home,#register,#monthly,#customers,#settings,#daily,#downloads,
  background:transparent!important;
 }
 </style>
-<style id="doodh-delight-scroll-nav-and-professional-header">
-/* Professional deep blue header, coordinated with the sky-blue page background */
-header.dw-dashboard-header{
- background:linear-gradient(115deg,#173b57 0%,#245674 100%)!important;
- background-image:linear-gradient(115deg,#173b57 0%,#245674 100%)!important;
- color:#fff!important;
- border:0!important;
- border-bottom:1px solid #ffffff20!important;
- box-shadow:0 3px 14px #173b5726!important;
-}
-header.dw-dashboard-header .dw-dashboard-brand-copy strong,
-header.dw-dashboard-header .dw-dashboard-brand-copy span{color:#fff!important}
-/* Bottom navigation hides during active scrolling and returns when scrolling stops */
-.dw-bottom-nav{
- position:fixed!important;left:0!important;right:0!important;bottom:0!important;
- transform:translateY(0);opacity:1;visibility:visible;
- transition:transform .26s ease,opacity .22s ease,visibility .22s ease!important;
- will-change:transform;
-}
-.dw-bottom-nav.dd-nav-hidden{
- transform:translateY(110%)!important;
- opacity:0!important;
- visibility:hidden!important;
- pointer-events:none!important;
-}
-@media(prefers-reduced-motion:reduce){
- .dw-bottom-nav{transition:none!important}
-}
-</style>
 </head><body>
 <div class="dw-launch-splash" id="dwLaunchSplash" role="status" aria-label="Loading">
  <div class="dw-hero-window"><img class="dw-hero-art" src="https://raw.githubusercontent.com/Naveentech1999/Milk-Attendance-APP/main/assets/milk-delivery-rider.gif.gif?v=74" alt="Milk delivery rider on scooter"></div>
@@ -2107,27 +2078,7 @@ function bindMonthlyCharges(){
   $('monthOutput').innerHTML=monthHtml();bindMonthlyCharges();say('Monthly delivery charge saved');
  });
 }
-function printPage(title,body){let w=window.open('','_blank');if(!w){say('Allow pop-ups to print or save PDF');return}w.document.write('<html><head><title>'+esc(title)+'</title><style>body{font:13px Arial;padding:24px}.bill-page{page-break-after:always;break-after:page}.bill-page:last-child{page-break-after:auto;break-after:auto}table{width:100%;border-collapse:collapse}td,th{padding:7px;border-bottom:1px solid #ddd;text-align:left}h1{color:#176b45}</style></head><body><h1>'+esc(title)+'</h1>'+body+'<script id="doodh-delight-scroll-nav-behavior">
-(()=> {
- const nav=document.querySelector('.dw-bottom-nav');
- if(!nav || nav.dataset.scrollBehaviorReady==='1') return;
- nav.dataset.scrollBehaviorReady='1';
- let idleTimer=null;
- const show=()=>{nav.classList.remove('dd-nav-hidden');};
- const hide=()=>{nav.classList.add('dd-nav-hidden');};
- const onScroll=()=>{
-  hide();
-  if(idleTimer) clearTimeout(idleTimer);
-  idleTimer=setTimeout(show,700);
- };
- window.addEventListener('scroll',onScroll,{passive:true});
- nav.addEventListener('click',()=>{
-  show();
-  if(idleTimer) clearTimeout(idleTimer);
- });
-})();
-</script>
-</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),300)}
+function printPage(title,body){let w=window.open('','_blank');if(!w){say('Allow pop-ups to print or save PDF');return}w.document.write('<html><head><title>'+esc(title)+'</title><style>body{font:13px Arial;padding:24px}.bill-page{page-break-after:always;break-after:page}.bill-page:last-child{page-break-after:auto;break-after:auto}table{width:100%;border-collapse:collapse}td,th{padding:7px;border-bottom:1px solid #ddd;text-align:left}h1{color:#176b45}</style></head><body><h1>'+esc(title)+'</h1>'+body+'</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),300)}
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));['register','daily','monthly','downloads','settings'].forEach(id=>document.getElementById(id)?.classList.toggle('hidden',id!==b.dataset.tab));if(b.dataset.tab==='daily')renderDaily();if(b.dataset.tab==='settings')renderPrices();if(b.dataset.tab==='monthly')fillCustomerSelect();if(b.dataset.tab==='downloads'){ $('downloadMonth').value=$('month').value;renderDownloadBills()}});
 function fillCustomerSelect(){$('billCustomer').innerHTML=db.customers.map(c=>`<option value="${c.id}">${esc(c.name)} — ${esc(c.location)}</option>`).join('')}
 $('date').onchange=()=>{renderList();renderDaily()};$('today').onclick=()=>{$('date').value=todayISO();renderList();renderDaily()};$('search').oninput=renderList;$('filter').onchange=renderList;function renderManagedCustomers(){
