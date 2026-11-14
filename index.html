@@ -1554,6 +1554,16 @@ table{border-radius:12px!important;overflow:hidden}
 @media(max-width:420px){main{width:calc(100% - 24px)!important;padding-top:13px!important}.ref-page-heading h2,#homeGreeting{font-size:21px!important}.dw-bottom-nav button{font-size:8px!important}.metric b{font-size:21px!important}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
+<style id="home-greeting-animations">
+.home-greeting-icon{display:inline-block;transform-origin:50% 55%;vertical-align:-.06em;margin-left:2px}
+.home-greeting-icon.morning{animation:greeting-sunrise 2.8s ease-in-out infinite}
+.home-greeting-icon.afternoon{animation:greeting-sunshine 2.2s ease-in-out infinite}
+.home-greeting-icon.evening{animation:greeting-moon 3s ease-in-out infinite}
+@keyframes greeting-sunrise{0%,100%{transform:translateY(2px) rotate(-12deg) scale(.92)}50%{transform:translateY(-3px) rotate(12deg) scale(1.12)}}
+@keyframes greeting-sunshine{0%,100%{transform:rotate(-12deg) scale(.96)}50%{transform:rotate(12deg) scale(1.16)}}
+@keyframes greeting-moon{0%,100%{transform:translateY(0) rotate(-10deg)}50%{transform:translateY(-3px) rotate(10deg)}}
+@media(prefers-reduced-motion:reduce){.home-greeting-icon{animation:none!important}}
+</style>
 </head><body>
 <div class="dw-launch-splash" id="dwLaunchSplash" role="status" aria-label="Loading">
  <div class="dw-hero-window"><img class="dw-hero-art" src="https://raw.githubusercontent.com/Naveentech1999/Milk-Attendance-APP/main/assets/milk-delivery-rider.gif.gif?v=74" alt="Milk delivery rider on scooter"></div>
@@ -2318,7 +2328,7 @@ if ('serviceWorker' in navigator) {
  const navs=[...document.querySelectorAll('[data-dw-tab]')];
  function updateHome(){
   if(typeof calcDay!=='function'||typeof monthRows!=='function')return;
-  const hour=new Date().getHours();const greeting=hour>=0&&hour<12?'Good morning':hour>=12&&hour<17?'Good afternoon':'Good evening';const greetingEl=document.getElementById('homeGreeting');if(greetingEl)greetingEl.textContent=greeting+' 👋';
+  const hour=new Date().getHours();const greeting=hour>=0&&hour<12?'Good morning':hour>=12&&hour<17?'Good afternoon':'Good evening';const greetingIcon=hour>=0&&hour<12?'🌅':hour>=12&&hour<17?'☀️':'🌙';const greetingClass=hour>=0&&hour<12?'morning':hour>=12&&hour<17?'afternoon':'evening';const greetingEl=document.getElementById('homeGreeting');if(greetingEl)greetingEl.innerHTML=greeting+' <span class="home-greeting-icon '+greetingClass+'" aria-hidden="true">'+greetingIcon+'</span>';
   const d=calcDay(),rows=monthRows(),total=rows.reduce((s,x)=>s+x.total,0);
   const marked=d.present+d.absent,unmarked=Math.max(0,db.customers.length-marked);
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
