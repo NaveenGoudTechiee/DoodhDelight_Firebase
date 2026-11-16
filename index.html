@@ -1738,7 +1738,7 @@ save();
 const net=(c,it)=>Math.max(0,(Number(it.qty)||0)+(Number(getVal(c,it).extra)||0)-(Number(getVal(c,it).returns)||0));
 const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
 const esc=s=>String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
-function calcDay(date=$('date').value){let r={litres:0,amount:0,commission:0,payable:0,products:{},present:0,absent:0};let entries=db.days[date]||{};db.customers.forEach(c=>{let e=entries[c.id];if(e?.status==='present'){r.present++;c.items.forEach(it=>{let v=e.items?.[it.id]||{extra:0,returns:0},q=Math.max(0,it.qty+(+v.extra||0)-(+v.returns||0)),a=q*(isPacketItem(it)?2:1)*price(it,date),k=key(it);if(!isCurd(it))r.litres+=q;r.amount+=a;if(!isCurd(it))r.commission+=q*db.commission;if(!r.products[k])r.products[k]={qty:0,amount:0};r.products[k].qty+=q;r.products[k].amount+=a})}else if(e?.status==='absent')r.absent++});r.payable=r.amount-r.commission;return r}
+function calcDay(date=$('date').value){let r={litres:0,amount:0,commission:0,payable:0,products:{},present:0,absent:0,brandLitres:{Heritage:0,Vijaya:0,Amul:0,Jersey:0}};let entries=db.days[date]||{};db.customers.forEach(c=>{let e=entries[c.id];if(e?.status==='present'){r.present++;c.items.forEach(it=>{let v=e.items?.[it.id]||{extra:0,returns:0},q=Math.max(0,(Number(it.qty)||0)+(Number(v.extra)||0)-(Number(v.returns)||0)),a=q*(isPacketItem(it)?2:1)*price(it,date),k=key(it),brand=isSmallMilk(it)||isCurd(it)?'Heritage':it.brand;if(!isCurd(it))r.litres+=q;r.amount+=a;if(!isCurd(it))r.commission+=q*db.commission;if(Object.prototype.hasOwnProperty.call(r.brandLitres,brand)&&!isCurd(it)&&!isSmallMilk(it))r.brandLitres[brand]+=q;if(!r.products[k])r.products[k]={qty:0,amount:0};r.products[k].qty+=q;r.products[k].amount+=a})}else if(e?.status==='absent')r.absent++});r.payable=r.amount-r.commission;return r}
 function refreshMetrics(){let t=calcDay();$('nCustomers').textContent=db.customers.length;$('nPresent').textContent=t.present;$('nAbsent').textContent=t.absent;$('nLitres').textContent=t.litres.toFixed(2)+' L'}
 function displayProductName(it){if(isCurd(it))return 'Heritage Curd packet';if(isSmallMilk(it))return 'Heritage Small packet';return it.brand+' '+it.type;}
 function applyKbr1GroundFloorUpdate(){
@@ -2355,11 +2355,7 @@ if ('serviceWorker' in navigator) {
   set('homeCustomers',db.customers.length);set('homeLitres',d.litres.toFixed(2)+' L');
   set('homePendingTitle',unmarked+' deliveries not marked');
   set('homePendingSub',d.present+' delivered · '+d.absent+' absent today');
-  const brandTotals={Heritage:0,Vijaya:0,Amul:0,Jersey:0};
-  Object.entries(d.products||{}).forEach(([k,v])=>{
-   const parts=k.split('|'),brand=parts[0]||'',type=parts.slice(1).join('|');
-   if(Object.prototype.hasOwnProperty.call(brandTotals,brand)&&!(/curd|small/i.test(type)))brandTotals[brand]+=Number(v.qty||0);
-  });
+  const brandTotals=d.brandLitres||{Heritage:0,Vijaya:0,Amul:0,Jersey:0};
   Object.entries(brandTotals).forEach(([brand,qty])=>{
    const el=document.getElementById('brandQty'+brand);
    if(el)el.textContent=qty.toFixed(2)+' L';
