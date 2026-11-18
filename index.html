@@ -1201,6 +1201,13 @@ button:hover{border-color:#9dbce5;box-shadow:0 4px 12px #245caa18}
 .dw-storage-console{display:inline-block;margin-top:10px;color:#087a50;font-size:11px;font-weight:800;text-decoration:none}
 .dw-storage-help{display:flex;flex-direction:column;gap:4px;margin-top:13px;padding:11px;border-radius:11px;background:#fff7e9;color:#6f552b;font-size:10px;line-height:1.5}
 .dw-storage-help b{font-size:11px}
+.dw-storage-dropdown{margin:12px 0 2px;border:1px solid #dce9e1;border-radius:14px;background:#fff;overflow:hidden}
+.dw-storage-dropdown>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;cursor:pointer;list-style:none;color:#173b29;font-size:13px;font-weight:900}
+.dw-storage-dropdown>summary::-webkit-details-marker{display:none}
+.dw-storage-dropdown>summary:after{content:'＋';font-size:17px;color:#087a50}
+.dw-storage-dropdown[open]>summary:after{content:'−'}
+.dw-storage-dropdown>summary span{margin-left:auto;color:#718078;font-size:10px;font-weight:600}
+.dw-storage-dropdown .dw-storage-card{margin:0;border:0;border-top:1px solid #e8eee9;border-radius:0;box-shadow:none}
 #dwRefreshStorage:disabled{opacity:.6;cursor:wait}
 @media(max-width:390px){.dw-storage-main strong{font-size:24px}.dw-storage-stats{gap:5px}.dw-storage-stats>div{padding:8px 6px}}
 </style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><link rel="preload" as="image" href="https://raw.githubusercontent.com/Naveentech1999/Milk-Attendance-APP/main/assets/milk-delivery-rider.gif.gif?v=74" fetchpriority="high">
@@ -1689,7 +1696,9 @@ main,#home,#register,#monthly,#customers,#settings,#daily,#downloads,
 <div class="cloud-data-actions"><button class="primary" id="firebaseUpload"><span>↑</span> Upload device data</button><button id="firebaseDownload"><span>↓</span> Download cloud data</button></div>
 <div class="cloud-data-actions" style="margin-top:9px"><button id="downloadBillingExcel" class="primary" style="width:100%">↓ Download Customer Billing Excel</button></div><p class="settings-note">Creates an Excel workbook from the latest attendance and milk records saved in this app, including daily prices and calculated bills.</p><div class="cloud-data-actions" style="margin-top:9px"><button id="firebaseExportBackup" style="width:100%">↓ Download JSON backup</button></div><p class="settings-note">Downloads a copy of the saved Firebase customer and attendance data. This does not change your records.</p>
 <div class="cloud-status-wrap"><span class="cloud-status-dot"></span><p id="firebaseStatus" class="muted">Not connected. Your existing local data remains on this device.</p></div>
-<div class="dw-storage-card" id="dwStorageCard">
+<details class="dw-storage-dropdown">
+ <summary>Storage <span>Click to view storage usage</span></summary>
+ <div class="dw-storage-card" id="dwStorageCard">
  <div class="dw-storage-head"><div><div class="settings-eyebrow">HELP · STORAGE MONITOR</div><div class="title">Firestore storage used</div></div><span class="dw-storage-live" id="dwStorageState">Waiting for sign-in</span></div>
  <div class="dw-storage-main"><strong id="dwStorageUsed">—</strong><span>of 1 GiB free quota</span></div>
  <div class="dw-storage-track" role="progressbar" aria-label="Estimated Firestore usage" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="dwStorageBar"></span></div>
@@ -1698,7 +1707,7 @@ main,#home,#register,#monthly,#customers,#settings,#daily,#downloads,
  <button type="button" id="dwRefreshStorage" style="width:100%;margin-top:10px">↻ Refresh storage estimate</button>
  <a class="dw-storage-console" href="https://console.firebase.google.com/" target="_blank" rel="noopener">Open Firebase Console usage dashboard ↗</a>
  <div class="dw-storage-help"><b>Month-end routine</b><span>Download the customer billing Excel and JSON backup first. Then remove only the previous month's attendance records after checking the backup. This meter never deletes data automatically.</span></div>
-</div></div></details>
+</div></details></div></details>
 </div>
 </section><p id="msg" class="muted"></p><div class="footer">Previous dates are retained separately. Unmarked and absent customers are excluded from daily and monthly bills.</div>
 <nav class="dw-bottom-nav" aria-label="Main navigation"><button class="active" data-dw-tab="home"><span class="dw-nav-icon">⌂</span><span>Home</span></button><button data-dw-tab="register"><span class="dw-nav-icon">🛵</span><span>Deliveries</span></button><button data-dw-tab="monthly"><span class="dw-nav-icon" aria-hidden="true">🧾</span><span>Bills</span></button><button data-dw-tab="customers"><span class="dw-nav-icon" aria-hidden="true">👥</span><span>Customers</span></button><button data-dw-tab="settings"><span class="dw-nav-icon" aria-hidden="true">⚙️</span><span>Admin</span></button></nav></main>
