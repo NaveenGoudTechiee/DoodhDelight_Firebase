@@ -3336,11 +3336,12 @@ if ('serviceWorker' in navigator) {
   const header=document.querySelector('.dw-dashboard-header');if(header)header.classList.toggle('hidden',id!=='home');
   if(id==='home')updateHome();
   if(id==='customers')renderCustomers();
-  const legacy=document.querySelector('[data-tab="'+id+'"]');
-  if(legacy)legacy.click();
+  /* The bottom navigation owns section visibility. Do not trigger the hidden legacy tab buttons. */
+  if(id==='register')renderList();
+  if(id==='daily')renderDaily();
   if(id==='monthly'){$('monthOutput').innerHTML=monthHtml();bindMonthlyCharges();fillCustomerSelect();}
-  if(id==='settings'){renderPrices();renderManagedCustomers();}
-  if(id==='settings')refreshDwStorageEstimate();
+  if(id==='settings'){renderPrices();renderManagedCustomers();refreshDwStorageEstimate();}
+  if(id==='downloads'&&typeof renderDownloadBills==='function')renderDownloadBills();
   window.scrollTo({top:0,behavior:'smooth'});
  }
  navs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.dwTab)));
